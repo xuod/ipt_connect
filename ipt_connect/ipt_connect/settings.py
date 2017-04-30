@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'IPT2016',
 	'FPT2017',
 	'IPT2017',
+    'problems',
 )
 
 MIDDLEWARE_CLASSES = (
