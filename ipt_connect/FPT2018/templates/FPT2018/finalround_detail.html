@@ -28,7 +28,7 @@
                     <td class="td-center"></td>
                     <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.reporter.team.name %}">{{round.reporter.team.name}}</a> -- <a href="{% url 'FPT2018:participant_detail' pk=round.reporter.pk %}">{{round.reporter.fullname}}</a></td>
                     <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.opponent.team.name %}">{{round.opponent.team.name}}</a> -- <a href="{% url 'FPT2018:participant_detail' pk=round.opponent.pk %}">{{round.opponent.fullname}}</a></td>
-                    <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.reviewer.team.name %}">{{round.reviewer.team.name}}</a> -- <a href="{% url 'FPT2018:participant_detail' pk=round.reviewer.pk %}">{{round.reviewer.fullname}}</a></td>
+                    <!-- <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.reviewer.team.name %}">{{round.reviewer.team.name}}</a> -- <a href="{% url 'FPT2018:participant_detail' pk=round.reviewer.pk %}">{{round.reviewer.fullname}}</a></td> -->
                 </tr>
 
             </table>
@@ -41,7 +41,7 @@
                     <th>Jury member</th>
                     <th class="td-center">Grade Reporter</th>
                     <th class="td-center">Grade Opponent</th>
-                    <th class="td-center">Grade Reviewer</th>
+                    <!-- <th class="td-center">Grade Reviewer</th> -->
                 </tr>
 
                 {% for jurygrade in jurygrades %}
@@ -49,7 +49,7 @@
                         <td><a href="{% url 'FPT2018:jury_detail' pk=jurygrade.jury.pk %}">{{jurygrade.jury.name}}</a></td>
                         <td class="td-center">{{jurygrade.grade_reporter|floatformat:2}}</td>
                         <td class="td-center">{{jurygrade.grade_opponent|floatformat:2}}</td>
-                        <td class="td-center">{{jurygrade.grade_reviewer|floatformat:2}}</td>
+                        <!-- <td class="td-center">{{jurygrade.grade_reviewer|floatformat:2}}</td> -->
                     </tr>
                 {% endfor %}
 
@@ -86,14 +86,14 @@
 
                          <th class="td-center">Reporter</th>
                          <th class="td-center">Opponent</th>
-                         <th class="td-center">Reviewer</th>
+                         <!-- <th class="td-center">Reviewer</th> -->
                     </tr>
 
                     <tr>
 
                          <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.reporter_team.name %}">{{round.reporter_team.name}}</a></td>
                          <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.opponent_team.name %}">{{round.opponent_team.name}}</a></td>
-                         <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.reviewer_team.name %}">{{round.reviewer_team.name}}</a></td>
+                         <!-- <td class="td-center"><a href="{% url 'FPT2018:team_detail' team_name=round.reviewer_team.name %}">{{round.reviewer_team.name}}</a></td> -->
                      </tr>
 
                  </table>

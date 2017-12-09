@@ -17,7 +17,7 @@
                 <th class="th-center"># de présentations</th>
                 <th class="th-center">Note moyenne du Reporter</th>
                 <th class="th-center">Note moyenne de l'Opponent</th>
-                <th class="th-center">Note moyenne du Reviewer</th>
+                <!-- <th class="th-center">Note moyenne du Reviewer</th> -->
             </tr>
         {% for problem in problems %}
             <tr>
@@ -25,7 +25,7 @@
                 <td class="td-center">{{problem.npres}}</td>
                 <td class="td-center">{{problem.meangradrep|floatformat:2}}</td>
                 <td class="td-center">{{problem.meangradopp|floatformat:2}}</td>
-                <td class="td-center">{{problem.meangradrev|floatformat:2}}</td>
+                <!-- <td class="td-center">{{problem.meangradrev|floatformat:2}}</td> -->
             </tr>
         {% endfor %}
         </table>

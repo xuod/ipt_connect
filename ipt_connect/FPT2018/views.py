@@ -67,9 +67,9 @@ def jury_export_web(request):
 def participants_overview(request):
 	participants = Participant.objects.filter(role='TM') | Participant.objects.filter(role='TC')
 	for participant in participants:
-		participant.allpoints = participant.tot_score_as_reporter + participant.tot_score_as_opponent + participant.tot_score_as_reviewer
+		participant.allpoints = participant.tot_score_as_reporter + participant.tot_score_as_opponent #+ participant.tot_score_as_reviewer
 		try:
-			participant.avggrade = participant.allpoints / len(Round.objects.filter(reporter=participant) | Round.objects.filter(opponent=participant) | Round.objects.filter(reviewer=participant))
+			participant.avggrade = participant.allpoints / len(Round.objects.filter(reporter=participant) | Round.objects.filter(opponent=participant)) #| Round.objects.filter(reviewer=participant)
 		except:
 			participant.avggrade = 0.0
 			print "PLOP"
@@ -92,15 +92,15 @@ def participants_all(request):
 def participant_detail(request, pk):
 	participant = Participant.objects.get(pk=pk)
 	# average_grades=participant.compute_average_grades(verbose=False)
-	rounds = (Round.objects.filter(reporter=participant) | Round.objects.filter(opponent=participant) | Round.objects.filter(reviewer=participant)).order_by('pf_number', 'round_number')
+	rounds = (Round.objects.filter(reporter=participant) | Round.objects.filter(opponent=participant)).order_by('pf_number', 'round_number') # | Round.objects.filter(reviewer=participant)
 	average_grades = []
 	for round in rounds:
 		if round.reporter == participant :
 			average_grades.append({"value": round.score_reporter, "round":round, "role":"reporter"})
-		elif round.opponent == participant :
+		if round.opponent == participant :
 			average_grades.append({"value": round.score_opponent, "round":round, "role":"opponent"})
-		else :
-			average_grades.append({"value": round.score_reviewer, "round":round, "role":"reviewer"})
+		# else :
+			# average_grades.append({"value": round.score_reviewer, "round":round, "role":"reviewer"})
 
 	return render(request, 'FPT2018/participant_detail.html', {'participant': participant, "average_grades": average_grades})
 
@@ -119,10 +119,10 @@ def jurys_overview(request):
 			jury.meanoppgrade = mean([grade.grade_opponent for grade in mygrades])
 		else:
 			jury.meanoppgrade = 0.0
-		if mygrades:
-			jury.meanrevgrade = mean([grade.grade_reviewer for grade in mygrades])
-		else:
-			jury.meanrevgrade = 0.0
+		# if mygrades:
+		# 	jury.meanrevgrade = mean([grade.grade_reviewer for grade in mygrades])
+		# else:
+		# 	jury.meanrevgrade = 0.0
 	return render(request, 'FPT2018/jurys_overview.html', {'jurys': jurys})
 
 
@@ -178,7 +178,7 @@ def team_detail(request, team_name):
 	teamleaders = Jury.objects.filter(team=team)
 	myreprounds = Round.objects.filter(reporter_team=team)
 	myopprounds = Round.objects.filter(opponent_team=team)
-	myrevrounds = Round.objects.filter(reviewer_team=team)
+	# myrevrounds = Round.objects.filter(reviewer_team=team)
 	allrounds = []
 	# for rounds in [myreprounds, myopprounds, myrevrounds]:
 	# 	for round in rounds:
@@ -209,13 +209,13 @@ def team_detail(request, team_name):
 			round.mygrade = round.score_opponent
 			 #round.reporter.compute_average_grades(rounds=[round], verbose=False)[0]["value"]
 			allrounds.append(round)
-	for round in myrevrounds:
-		# if len(JuryGrade.objects.filter(round=round)) > 0:
-		if round.score_reviewer > 0.:
-			round.myrole = "reviewer"
-			round.mygrade = round.score_reviewer
-			 #round.reporter.compute_average_grades(rounds=[round], verbose=False)[0]["value"]
-			allrounds.append(round)
+	# for round in myrevrounds:
+	# 	# if len(JuryGrade.objects.filter(round=round)) > 0:
+	# 	if round.score_reviewer > 0.:
+	# 		round.myrole = "reviewer"
+	# 		round.mygrade = round.score_reviewer
+	# 		 #round.reporter.compute_average_grades(rounds=[round], verbose=False)[0]["value"]
+	# 		allrounds.append(round)
 
 	penalties=[]
 	prescoeffs = team.presentation_coefficients(verbose=False)
@@ -238,7 +238,7 @@ def problems_overview(request):
 		# problem.meangradrev = meangrades["review"]
 		problem.meangradrep = problem.mean_score_of_reporters
 		problem.meangradopp = problem.mean_score_of_opponents
-		problem.meangradrev = problem.mean_score_of_reviewers
+		# problem.meangradrev = problem.mean_score_of_reviewers
 
 	return render(request, 'FPT2018/problems_overview.html', {'problems': problems})
 
@@ -274,7 +274,7 @@ def rounds(request):
 		myrounds = Round.objects.filter(pf_number=npf+1)
 		finalrounds = sorted(myrounds, key=lambda round: round.round_number)
 		try:
-			finalteams = [finalrounds[0].reporter_team, finalrounds[0].opponent_team, finalrounds[0].reviewer_team]
+			finalteams = [finalrounds[0].reporter_team, finalrounds[0].opponent_team] #, finalrounds[0].reviewer_team
 			finalpoints = [team.points(pfnumber=5, bonuspoints=False) for team in finalteams]
 			#finalpoints = [23.58, 8.86, 6.57]
 		except:
@@ -301,7 +301,7 @@ def round_detail(request, pk):
 	meangrades = []
 
 	# has the round started ? If so, then reporter_team, opponent_team and reviewer_team must be defined
-	if None in [round.reporter_team, round.opponent_team, round.reviewer_team, round.problem_presented]:
+	if None in [round.reporter_team, round.opponent_team, round.problem_presented]: #round.reviewer_team
 		started = False
 	else:
 		started = True
@@ -313,7 +313,7 @@ def round_detail(request, pk):
 		# meangrades.append(thisround.reviewer.compute_average_grades(rounds=round, verbose=False)[0]["value"])
 		meangrades.append(round.score_reporter)
 		meangrades.append(round.score_opponent)
-		meangrades.append(round.score_reviewer)
+		# meangrades.append(round.score_reviewer)
 
 		finished = True
 	else:
@@ -334,7 +334,7 @@ def finalround_detail(request, pk):
 	meangrades = []
 
 	# has the round started ? If so, then reporter_team, opponent_team and reviewer_team must be defined
-	if None in [thisround.reporter_team, thisround.opponent_team, thisround.reviewer_team, thisround.problem_presented]:
+	if None in [thisround.reporter_team, thisround.opponent_team, thisround.problem_presented]: #, thisround.reviewer_team
 		started = False
 	else:
 		started = True
@@ -343,7 +343,7 @@ def finalround_detail(request, pk):
 	if len(jurygrades) != 0:
 		meangrades.append(round[0].reporter.compute_average_grades(rounds=[round[0]], verbose=False)[0]["value"])
 		meangrades.append(round[0].opponent.compute_average_grades(rounds=[round[0]], verbose=False)[0]["value"])
-		meangrades.append(round[0].reviewer.compute_average_grades(rounds=[round[0]], verbose=False)[0]["value"])
+		# meangrades.append(round[0].reviewer.compute_average_grades(rounds=[round[0]], verbose=False)[0]["value"])
 		finished = True
 	else:
 		finished = False
@@ -418,7 +418,7 @@ def physics_fight_detail(request, pfid):
 				# meangrades.append(round.reviewer.compute_average_grades(rounds=[round], verbose=False)[0]["value"])
 				meangrades.append(round.score_reporter)
 				meangrades.append(round.score_opponent)
-				meangrades.append(round.score_reviewer)
+				# meangrades.append(round.score_reviewer)
 
 			except:
 				pass
@@ -448,8 +448,8 @@ def ranking(request):
 		for ind, team in enumerate(ranking):
 			nrounds_as_rep = team.nrounds_as_rep # Round.objects.filter(reporter_team=team)
 			nrounds_as_opp = team.nrounds_as_opp # Round.objects.filter(opponent_team=team)
-			nrounds_as_rev = team.nrounds_as_rev # Round.objects.filter(reviewer_team=team)
-			pfsplayed = min(nrounds_as_rep, nrounds_as_opp, nrounds_as_rev)
+			# nrounds_as_rev = team.nrounds_as_rev # Round.objects.filter(reviewer_team=team)
+			pfsplayed = min(nrounds_as_rep, nrounds_as_opp) #, nrounds_as_rev
 			team.pfsplayed = pfsplayed
 			team.ongoingpf = False
 			if max(nrounds_as_rep, nrounds_as_opp, nrounds_as_rev) > pfsplayed:

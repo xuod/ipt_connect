@@ -23,7 +23,7 @@
                 <table>
                     <td class="th-center">Rep. (<a href="{% url 'FPT2018:team_detail' team_name=juryroundsgrade.round.reporter.team.name %}">{{juryroundsgrade.round.reporter.team.name}}</a>)</td>
                     <td class="th-center">Opp. (<a href="{% url 'FPT2018:team_detail' team_name=juryroundsgrade.round.opponent.team.name %}">{{juryroundsgrade.round.opponent.team.name}}</a>)</td>
-                    <td class="th-center">Rev. (<a href="{% url 'FPT2018:team_detail' team_name=juryroundsgrade.round.reviewer.team.name %}">{{juryroundsgrade.round.reviewer.team.name}}</a>)</td>
+                    <!-- <td class="th-center">Rev. (<a href="{% url 'FPT2018:team_detail' team_name=juryroundsgrade.round.reviewer.team.name %}">{{juryroundsgrade.round.reviewer.team.name}}</a>)</td> -->
                 </table>
             </th>
             {% endfor %}
@@ -36,7 +36,7 @@
                 <table>
                     <td class="td-center">{{juryroundsgrade.grade_reporter}}</td>
                     <td class="td-center">{{juryroundsgrade.grade_opponent}}</td>
-                    <td class="td-center">{{juryroundsgrade.grade_reviewer}}</td>
+                    <!-- <td class="td-center">{{juryroundsgrade.grade_reviewer}}</td> -->
                 </table>
             </td>
             {% endfor %}

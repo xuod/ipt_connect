@@ -26,14 +26,14 @@
                 <th class="th-center">Problèmes jugés</th>
                 <th class="th-center">Note au Reporter</th>
                 <th class="th-center">Noter à l'Opponent</th>
-                <th class="th-center">Note au Reviewer</th>
+                <!-- <th class="th-center">Note au Reviewer</th> -->
             </tr>
             {% for grade in grades %}
                 <tr>
                     <td class="td-center"><a href="{% url 'FPT2018:problem_detail' pk=grade.round.problem_presented.pk %}">{{grade.round.problem_presented}}</a></td>
                     <td class="td-center"><a href="{% url 'FPT2018:round_detail' pk=grade.round.pk %}">{{grade.grade_reporter}} ({{grade.round.reporter_team.name}})</a></td>
                     <td class="td-center"><a href="{% url 'FPT2018:round_detail' pk=grade.round.pk %}">{{grade.grade_opponent}} ({{grade.round.opponent_team.name}})</a></td>
-                    <td class="td-center"><a href="{% url 'FPT2018:round_detail' pk=grade.round.pk %}">{{grade.grade_reviewer}} ({{grade.round.reviewer_team.name}})</a></td>
+                    <!-- <td class="td-center"><a href="{% url 'FPT2018:round_detail' pk=grade.round.pk %}">{{grade.grade_reviewer}} ({{grade.round.reviewer_team.name}})</a></td> -->
                 </tr>
             {% endfor %}
 
